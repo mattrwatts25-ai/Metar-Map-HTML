@@ -143,8 +143,6 @@
     align-items: center;
   }
 
-  #status-bar span { color: #90a4ae; }
-
   #map {
     flex: 1;
     min-height: 480px;
@@ -229,7 +227,6 @@
   .leaflet-tile { filter: brightness(.85) saturate(.9); }
   .leaflet-popup-content-wrapper { background: #fff; color: #222; }
 
-  /* Error/debug panel */
   #debug-panel {
     display: none;
     background: #1a0a0a;
@@ -278,8 +275,7 @@
   <span id="last-update"></span>
 </div>
 
-<!-- Debug panel shown only on errors -->
-<div id="debug-panel" id="debug-panel"></div>
+<div id="debug-panel"></div>
 
 <div style="position:relative;flex:1;display:flex;flex-direction:column;">
   <div id="map"></div>
@@ -290,7 +286,7 @@
 </div>
 
 <footer>
-  Data: <a href="https://aviationweather.gov" target="_blank">Aviation Weather Center (NOAA)</a> ·
+  Data: <a href="https://checkwxapi.com" target="_blank">CheckWX Aviation Weather API</a> ·
   Map: <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a> ·
   METARs for situational awareness only — always get official briefing via
   <a href="https://1800wxbrief.com" target="_blank">1800wxbrief.com</a>
@@ -298,11 +294,28 @@
 
 <script>
 // ─────────────────────────────────────────────────────────────────
-//  CONFIGURATION — edit airport list here
+//  !! PASTE YOUR CHECKWX API KEY BETWEEN THE QUOTES BELOW !!
+// ─────────────────────────────────────────────────────────────────
+const API_KEY = 'c4f63a28bdab46ac8dffbdeb5305cbd8';
+
+// ─────────────────────────────────────────────────────────────────
+//  AIRPORT LIST — edit as needed
 // ─────────────────────────────────────────────────────────────────
 let airports = [
-  'KCLL','KHOU','KDFW','KSAT','KAUS','KIAH','KELP','KAMA',
-  'KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG','KBRO'
+  // Major US Hubs
+  'KATL','KLAX','KORD','KDFW','KDEN','KJFK','KSFO','KLAS',
+  'KMCO','KSEA','KEWR','KPHX','KIAH','KMIA','KBOS','KMSP',
+  'KDTW','KPHL','KLGA','KFLL','KBWI','KSLC','KIAD','KMDW',
+  'KHOU','KSAN','KTPA','KPDX','KSTL','KBNA','KMKE','KAUS',
+  'KSAT','KELP','KSJC','KOAK','KABQ','KMEM','KCVG','KIND',
+  'KCLT','KRDU','KPIT','KCLE','KBUF','KMSY','KRSW','KSMF',
+  'KONT','KBUR',
+  // Texas Regional
+  'KAMA','KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG',
+  'KBRO','KCRP','KGRK','KSJT','KINK','KDRT','KALI','KGTU',
+  // Houston / Galveston / College Station
+  'KCLL','KGLS','KLVJ','KDWH','KSGR','KHPY','KCXO','KLBX',
+  'KUTS','KVCT'
 ];
 
 // ─────────────────────────────────────────────────────────────────
@@ -332,7 +345,7 @@ function flightCategory(m) {
 // ─────────────────────────────────────────────────────────────────
 //  MAP SETUP
 // ─────────────────────────────────────────────────────────────────
-const map = L.map('map', { zoomControl: true }).setView([31.5, -97.5], 6);
+const map = L.map('map', { zoomControl: true }).setView([38.5, -96], 4);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   subdomains: 'abcd', maxZoom: 19
@@ -342,10 +355,9 @@ let markers   = {};
 let metarData = {};
 
 // ─────────────────────────────────────────────────────────────────
-//  FETCH — tries direct, then two CORS proxies as fallback
+//  FETCH from CheckWX API
 // ─────────────────────────────────────────────────────────────────
 async function fetchMetars(icaoList) {
-  const API_KEY = 'c4f63a28bdab46ac8dffbdeb5305cbd8';  // ← your key goes here
   const ids = icaoList.join(',');
   const url = `https://api.checkwx.com/metar/${ids}/decoded`;
 
@@ -359,7 +371,7 @@ async function fetchMetars(icaoList) {
     const json = await res.json();
     if (!json.data || !json.data.length) throw new Error('No data returned');
 
-    // Translate CheckWX format to match what the rest of the code expects
+    // Translate CheckWX format to internal format
     return json.data.map(m => ({
       icaoId:         m.icao,
       lat:            m.station?.geometry?.coordinates?.[1],
@@ -373,7 +385,7 @@ async function fetchMetars(icaoList) {
       visib:          m.visibility?.miles_float,
       temp:           m.temperature?.celsius,
       dewp:           m.dewpoint?.celsius,
-      altim:          m.barometer?.mb ? m.barometer.mb * 0.02953 / 0.02953 : null,
+      altim:          m.barometer?.hg ?? null,
       wxString:       m.conditions?.map(c => c.code).join(' ') || null,
       clouds:         (m.clouds || []).map(c => ({
                         cover: c.code,
@@ -381,7 +393,7 @@ async function fetchMetars(icaoList) {
                       }))
     }));
   } catch (err) {
-    showDebug(`CheckWX fetch failed: ${err.message}`);
+    showDebug(`Fetch failed: ${err.message}`);
     console.error('METAR fetch error:', err);
     return [];
   }
@@ -394,13 +406,12 @@ function buildPopup(m) {
   const cat = flightCategory(m);
   const cfg = CAT[cat] || CAT.UNKN;
 
-  const wind = m.wdir != null
+  const wind     = m.wdir != null
     ? `${String(m.wdir).padStart(3,'0')}° @ ${m.wspd ?? '?'}kt${m.wgst ? ` G${m.wgst}` : ''}`
     : 'Calm / VRB';
-
   const vis      = m.visib  != null ? `${m.visib} SM` : '—';
   const temp     = m.temp   != null ? `${m.temp}°C / ${m.dewp ?? '?'}°C dew` : '—';
-  const alt      = m.altim  != null ? `${(m.altim * 0.02953).toFixed(2)} inHg` : '—';
+  const alt      = m.altim  != null ? `${parseFloat(m.altim).toFixed(2)} inHg` : '—';
   const cloudStr = m.clouds && m.clouds.length
     ? m.clouds.map(c => `${c.cover} @ ${c.base ?? '?'}ft`).join(', ')
     : 'SKC / CLR';
@@ -473,8 +484,7 @@ async function refreshAll() {
   const data = await fetchMetars(airports);
 
   if (!data.length) {
-    setStatus('⚠ All fetch attempts failed — see details below.');
-    showDebug('All three methods failed. If you are running this as a local file, try hosting it on GitHub Pages or Netlify (free). See the README in the email for instructions.');
+    setStatus('⚠ No data returned — check API key or network.');
     document.getElementById('loading').style.display = 'none';
     return;
   }
@@ -529,8 +539,17 @@ function resetDefaults() {
   Object.values(markers).forEach(mk => map.removeLayer(mk));
   markers = {}; metarData = {};
   airports = [
-    'KCLL','KHOU','KDFW','KSAT','KAUS','KIAH','KELP','KAMA',
-    'KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG','KBRO'
+    'KATL','KLAX','KORD','KDFW','KDEN','KJFK','KSFO','KLAS',
+    'KMCO','KSEA','KEWR','KPHX','KIAH','KMIA','KBOS','KMSP',
+    'KDTW','KPHL','KLGA','KFLL','KBWI','KSLC','KIAD','KMDW',
+    'KHOU','KSAN','KTPA','KPDX','KSTL','KBNA','KMKE','KAUS',
+    'KSAT','KELP','KSJC','KOAK','KABQ','KMEM','KCVG','KIND',
+    'KCLT','KRDU','KPIT','KCLE','KBUF','KMSY','KRSW','KSMF',
+    'KONT','KBUR',
+    'KAMA','KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG',
+    'KBRO','KCRP','KGRK','KSJT','KINK','KDRT','KALI','KGTU',
+    'KCLL','KGLS','KLVJ','KDWH','KSGR','KHPY','KCXO','KLBX',
+    'KUTS','KVCT'
   ];
   refreshAll();
 }

@@ -358,45 +358,51 @@ let metarData = {};
 //  FETCH from CheckWX API
 // ─────────────────────────────────────────────────────────────────
 async function fetchMetars(icaoList) {
-  const ids = icaoList.join(',');
-  const url = `https://api.checkwx.com/metar/${ids}/decoded`;
-
-  try {
-    setStatus('Fetching METARs…');
-    const res = await fetch(url, {
-      headers: { 'X-API-Key': API_KEY },
-      signal: AbortSignal.timeout(10000)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (!json.data || !json.data.length) throw new Error('No data returned');
-
-    // Translate CheckWX format to internal format
-    return json.data.map(m => ({
-      icaoId:         m.icao,
-      lat:            m.station?.geometry?.coordinates?.[1],
-      lon:            m.station?.geometry?.coordinates?.[0],
-      flightCategory: m.flight_category,
-      rawOb:          m.raw_text,
-      reportTime:     m.observed,
-      wdir:           m.wind?.degrees,
-      wspd:           m.wind?.speed_kts,
-      wgst:           m.wind?.gust_kts,
-      visib:          m.visibility?.miles_float,
-      temp:           m.temperature?.celsius,
-      dewp:           m.dewpoint?.celsius,
-      altim:          m.barometer?.hg ?? null,
-      wxString:       m.conditions?.map(c => c.code).join(' ') || null,
-      clouds:         (m.clouds || []).map(c => ({
-                        cover: c.code,
-                        base:  c.base_feet_agl
-                      }))
-    }));
-  } catch (err) {
-    showDebug(`Fetch failed: ${err.message}`);
-    console.error('METAR fetch error:', err);
-    return [];
+  // Split into batches of 10 to stay within CheckWX limits
+  const batches = [];
+  for (let i = 0; i < icaoList.length; i += 10) {
+    batches.push(icaoList.slice(i, i + 10));
   }
+
+  const results = [];
+  for (const batch of batches) {
+    const ids = batch.join(',');
+    const url = `https://api.checkwx.com/metar/${ids}/decoded`;
+    try {
+      const res = await fetch(url, {
+        headers: { 'X-API-Key': API_KEY },
+        signal: AbortSignal.timeout(10000)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if (json.data && json.data.length) {
+        json.data.forEach(m => results.push({
+          icaoId:         m.icao,
+          lat:            m.station?.geometry?.coordinates?.[1],
+          lon:            m.station?.geometry?.coordinates?.[0],
+          flightCategory: m.flight_category,
+          rawOb:          m.raw_text,
+          reportTime:     m.observed,
+          wdir:           m.wind?.degrees,
+          wspd:           m.wind?.speed_kts,
+          wgst:           m.wind?.gust_kts,
+          visib:          m.visibility?.miles_float,
+          temp:           m.temperature?.celsius,
+          dewp:           m.dewpoint?.celsius,
+          altim:          m.barometer?.hg ?? null,
+          wxString:       m.conditions?.map(c => c.code).join(' ') || null,
+          clouds:         (m.clouds || []).map(c => ({
+                            cover: c.code,
+                            base:  c.base_feet_agl
+                          }))
+        }));
+      }
+    } catch (err) {
+      showDebug(`Batch failed (${ids}): ${err.message}`);
+      console.error('Batch fetch error:', err);
+    }
+  }
+  return results;
 }
 
 // ─────────────────────────────────────────────────────────────────

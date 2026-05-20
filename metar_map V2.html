@@ -5,36 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>METAR Flight Category Map</title>
 
-<<<<<<< HEAD
-=======
-<!-- Leaflet.js: free, open-source map library (no API key needed) -->
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <style>
-<<<<<<< HEAD
-=======
-  /* ── Google Font ─────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;600;700&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-<<<<<<< HEAD
     --vfr:   #00e676;
     --mvfr:  #2979ff;
     --ifr:   #ff1744;
     --lifr:  #aa00ff;
     --unkn:  #78909c;
-=======
-    --vfr:   #00e676;   /* green  */
-    --mvfr:  #2979ff;   /* blue   */
-    --ifr:   #ff1744;   /* red    */
-    --lifr:  #aa00ff;   /* purple */
-    --unkn:  #78909c;   /* grey   */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
     --bg:    #0a0e17;
     --panel: #111827;
     --border:#1e2d40;
@@ -51,10 +35,6 @@
     flex-direction: column;
   }
 
-<<<<<<< HEAD
-=======
-  /* ── Header ──────────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   header {
     background: linear-gradient(135deg, #0d1b2a 0%, #1a2f4e 100%);
     border-bottom: 1px solid var(--border);
@@ -90,10 +70,6 @@
     text-transform: uppercase;
   }
 
-<<<<<<< HEAD
-=======
-  /* ── Controls row ────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   .controls {
     display: flex;
     align-items: center;
@@ -136,10 +112,6 @@
     color: var(--text);
   }
 
-<<<<<<< HEAD
-=======
-  /* ── Legend ──────────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   .legend {
     display: flex;
     gap: 16px;
@@ -159,10 +131,6 @@
     box-shadow: 0 0 6px currentColor;
   }
 
-<<<<<<< HEAD
-=======
-  /* ── Status bar ──────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   #status-bar {
     background: #0d1b2a;
     border-bottom: 1px solid var(--border);
@@ -177,19 +145,11 @@
 
   #status-bar span { color: #90a4ae; }
 
-<<<<<<< HEAD
-=======
-  /* ── Map ─────────────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   #map {
     flex: 1;
     min-height: 480px;
   }
 
-<<<<<<< HEAD
-=======
-  /* ── Info panel (METAR popup) ────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   .metar-popup {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.78rem;
@@ -229,10 +189,6 @@
   .metar-popup td { padding: 2px 0; }
   .metar-popup td:first-child { color: #607d8b; padding-right: 8px; }
 
-<<<<<<< HEAD
-=======
-  /* ── Footer ──────────────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   footer {
     background: var(--panel);
     border-top: 1px solid var(--border);
@@ -241,15 +197,8 @@
     color: #455a64;
     text-align: center;
   }
-<<<<<<< HEAD
   footer a { color: #607d8b; }
 
-=======
-
-  footer a { color: #607d8b; }
-
-  /* ── Loading overlay ─────────────────────────────────────────── */
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   #loading {
     position: absolute;
     inset: 0;
@@ -277,7 +226,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-<<<<<<< HEAD
   .leaflet-tile { filter: brightness(.85) saturate(.9); }
   .leaflet-popup-content-wrapper { background: #fff; color: #222; }
 
@@ -294,19 +242,10 @@
     padding: 10px 14px;
     line-height: 1.7;
   }
-=======
-  /* Leaflet dark tile layer tweak */
-  .leaflet-tile { filter: brightness(.85) saturate(.9); }
-  .leaflet-popup-content-wrapper { background: #fff; color: #222; }
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 </style>
 </head>
 <body>
 
-<<<<<<< HEAD
-=======
-<!-- ── HEADER ──────────────────────────────────────────────────── -->
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 <header>
   <div class="logo-area">
     <div class="logo-icon">✈</div>
@@ -334,22 +273,14 @@
   </div>
 </header>
 
-<<<<<<< HEAD
-=======
-<!-- ── STATUS BAR ──────────────────────────────────────────────── -->
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 <div id="status-bar">
   <span id="status-msg">Initializing…</span>
   <span id="last-update"></span>
 </div>
 
-<<<<<<< HEAD
 <!-- Debug panel shown only on errors -->
 <div id="debug-panel" id="debug-panel"></div>
 
-=======
-<!-- ── MAP CONTAINER ──────────────────────────────────────────── -->
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 <div style="position:relative;flex:1;display:flex;flex-direction:column;">
   <div id="map"></div>
   <div id="loading">
@@ -358,7 +289,6 @@
   </div>
 </div>
 
-<<<<<<< HEAD
 <footer>
   Data: <a href="https://aviationweather.gov" target="_blank">Aviation Weather Center (NOAA)</a> ·
   Map: <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a> ·
@@ -370,27 +300,11 @@
 // ─────────────────────────────────────────────────────────────────
 //  CONFIGURATION — edit airport list here
 // ─────────────────────────────────────────────────────────────────
-=======
-<!-- ── FOOTER ──────────────────────────────────────────────────── -->
-<footer>
-  Data: <a href="https://aviationweather.gov" target="_blank">Aviation Weather Center (NOAA)</a> · 
-  Map: <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a> · 
-  METAR data is for situational awareness only — always obtain official preflight briefing via <a href="https://1800wxbrief.com" target="_blank">1800wxbrief.com</a>
-</footer>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════════════════════ -->
-<script>
-// ── DEFAULT AIRPORTS ─────────────────────────────────────────────
-// Edit this list to match the airports most relevant to your readers!
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 let airports = [
   'KCLL','KHOU','KDFW','KSAT','KAUS','KIAH','KELP','KAMA',
   'KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG','KBRO'
 ];
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────────────
 //  FLIGHT CATEGORY
 // ─────────────────────────────────────────────────────────────────
@@ -419,26 +333,11 @@ function flightCategory(m) {
 //  MAP SETUP
 // ─────────────────────────────────────────────────────────────────
 const map = L.map('map', { zoomControl: true }).setView([31.5, -97.5], 6);
-=======
-// ── FLIGHT CATEGORY CONFIG ────────────────────────────────────────
-const CAT = {
-  VFR:  { color: '#00e676', label: 'VFR',  radius: 10 },
-  MVFR: { color: '#2979ff', label: 'MVFR', radius: 10 },
-  IFR:  { color: '#ff1744', label: 'IFR',  radius: 12 },
-  LIFR: { color: '#aa00ff', label: 'LIFR', radius: 14 },
-  UNKN: { color: '#78909c', label: '???',  radius: 8  },
-};
-
-// ── MAP SETUP ─────────────────────────────────────────────────────
-const map = L.map('map', { zoomControl: true }).setView([31.5, -97.5], 6);
-
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   subdomains: 'abcd', maxZoom: 19
 }).addTo(map);
 
-<<<<<<< HEAD
 let markers   = {};
 let metarData = {};
 
@@ -446,98 +345,49 @@ let metarData = {};
 //  FETCH — tries direct, then two CORS proxies as fallback
 // ─────────────────────────────────────────────────────────────────
 async function fetchMetars(icaoList) {
-  const API_KEY = c4f63a28bdab46ac8dffbdeb5305cbd8;  // ← your key goes here
   const ids = icaoList.join(',');
-  const url = `https://api.checkwx.com/metar/${ids}/decoded`;
 
-  try {
-    setStatus('Fetching METARs…');
-    const res = await fetch(url, {
-      headers: { 'X-API-Key': API_KEY },
-      signal: AbortSignal.timeout(10000)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (!json.data || !json.data.length) throw new Error('No data returned');
+  // Direct AWC endpoint (works when hosted on a server / GitHub Pages)
+  const directURL = `https://aviationweather.gov/api/data/metar?ids=${ids}&format=json&hours=2`;
 
-    // Translate CheckWX format to match what the rest of the code expects
-    return json.data.map(m => ({
-      icaoId:         m.icao,
-      lat:            m.station?.geometry?.coordinates?.[1],
-      lon:            m.station?.geometry?.coordinates?.[0],
-      flightCategory: m.flight_category,
-      rawOb:          m.raw_text,
-      reportTime:     m.observed,
-      wdir:           m.wind?.degrees,
-      wspd:           m.wind?.speed_kts,
-      wgst:           m.wind?.gust_kts,
-      visib:          m.visibility?.miles_float,
-      temp:           m.temperature?.celsius,
-      dewp:           m.dewpoint?.celsius,
-      altim:          m.barometer?.mb ? m.barometer.mb * 0.02953 / 0.02953 : null,
-      wxString:       m.conditions?.map(c => c.code).join(' ') || null,
-      clouds:         (m.clouds || []).map(c => ({
-                        cover: c.code,
-                        base:  c.base_feet_agl
-                      }))
-    }));
-  } catch (err) {
-    showDebug(`CheckWX fetch failed: ${err.message}`);
-=======
-let markers = {};   // icao → Leaflet marker
-let metarData = {}; // icao → parsed metar object
+  // CORS proxy wrappers (work when opened as a local file)
+  const proxy1 = `https://corsproxy.io/?${encodeURIComponent(directURL)}`;
+  const proxy2 = `https://api.allorigins.win/get?url=${encodeURIComponent(directURL)}`;
 
-// ── FETCH METAR DATA ──────────────────────────────────────────────
-async function fetchMetars(icaoList) {
-  const ids = icaoList.join(',');
-  // Aviation Weather Center free JSON API (no key needed!)
-  const url = `https://aviationweather.gov/api/data/metar?ids=${ids}&format=json&hours=2`;
+  const attempts = [
+    { label: 'direct',   url: directURL, parse: r => r.json() },
+    { label: 'proxy1',   url: proxy1,    parse: r => r.json() },
+    { label: 'proxy2',   url: proxy2,    parse: async r => { const j = await r.json(); return JSON.parse(j.contents); } },
+  ];
 
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data; // array of metar objects
-  } catch (err) {
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
-    console.error('METAR fetch error:', err);
-    return [];
+  for (const attempt of attempts) {
+    try {
+      setStatus(`Trying ${attempt.label}…`);
+      const res = await fetch(attempt.url, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await attempt.parse(res);
+      if (Array.isArray(data) && data.length > 0) {
+        hideDebug();
+        return data;
+      }
+      throw new Error('Empty or non-array response');
+    } catch (err) {
+      showDebug(`${attempt.label} failed: ${err.message}`);
+      console.warn(`METAR fetch [${attempt.label}] failed:`, err);
+    }
   }
+
+  return [];
 }
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────────────
 //  POPUP
 // ─────────────────────────────────────────────────────────────────
-=======
-// ── DETERMINE FLIGHT CATEGORY ─────────────────────────────────────
-// AWC API already gives us flightCategory, but we calculate as fallback
-function flightCategory(m) {
-  if (m.flightCategory) return m.flightCategory;
-
-  const ceil = m.clouds
-    ? m.clouds.reduce((lo, c) => {
-        if (['BKN','OVC','OVX'].includes(c.cover)) return Math.min(lo, c.base ?? 99999);
-        return lo;
-      }, 99999)
-    : 99999;
-
-  const vis = m.visib ?? 99;
-
-  if (ceil < 500  || vis < 1)   return 'LIFR';
-  if (ceil < 1000 || vis < 3)   return 'IFR';
-  if (ceil < 3000 || vis < 5)   return 'MVFR';
-  return 'VFR';
-}
-
-// ── BUILD POPUP HTML ──────────────────────────────────────────────
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 function buildPopup(m) {
   const cat = flightCategory(m);
   const cfg = CAT[cat] || CAT.UNKN;
 
   const wind = m.wdir != null
-<<<<<<< HEAD
     ? `${String(m.wdir).padStart(3,'0')}° @ ${m.wspd ?? '?'}kt${m.wgst ? ` G${m.wgst}` : ''}`
     : 'Calm / VRB';
 
@@ -549,21 +399,6 @@ function buildPopup(m) {
     : 'SKC / CLR';
   const wxStr    = m.wxString || '—';
   const obsTime  = m.reportTime
-=======
-    ? `${String(m.wdir).padStart(3,'0')}° @ ${m.wspd ?? '?'}kt${m.wgst ? ` (G${m.wgst})` : ''}`
-    : 'Calm / VRB';
-
-  const vis  = m.visib != null ? `${m.visib} SM` : '—';
-  const temp = m.temp  != null ? `${m.temp}°C / ${m.dewp ?? '?'}°C dew` : '—';
-  const alt  = m.altim != null ? `${(m.altim * 0.02953).toFixed(2)} inHg` : '—';
-
-  const cloudStr = m.clouds && m.clouds.length
-    ? m.clouds.map(c => `${c.cover} @ ${c.base ?? '?'} ft`).join(', ')
-    : 'SKC / CLR';
-
-  const wxStr = m.wxString || '—';
-  const obsTime = m.reportTime
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
     ? new Date(m.reportTime).toUTCString().replace('GMT','Z')
     : '—';
 
@@ -584,7 +419,6 @@ function buildPopup(m) {
     </div>`;
 }
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────────────
 //  MARKERS
 // ─────────────────────────────────────────────────────────────────
@@ -625,70 +459,19 @@ function upsertMarker(m) {
 // ─────────────────────────────────────────────────────────────────
 //  MAIN REFRESH
 // ─────────────────────────────────────────────────────────────────
-=======
-// ── CREATE / UPDATE MARKER ────────────────────────────────────────
-function upsertMarker(m) {
-  const cat = flightCategory(m);
-  const cfg = CAT[cat] || CAT.UNKN;
-  const lat  = m.lat;
-  const lon  = m.lon;
-
-  if (!lat || !lon) return;
-
-  const icon = L.divIcon({
-    className: '',
-    html: `
-      <div style="
-        width:${cfg.radius*2}px;
-        height:${cfg.radius*2}px;
-        background:${cfg.color};
-        border-radius:50%;
-        border:2px solid rgba(255,255,255,.4);
-        box-shadow:0 0 8px ${cfg.color}, 0 0 2px #000;
-        display:flex;align-items:center;justify-content:center;
-        font-size:7px;font-weight:700;color:#000;
-        font-family:'Barlow',sans-serif;
-        letter-spacing:.5px;
-      ">${m.icaoId.replace(/^K/,'')}</div>`,
-    iconSize:   [cfg.radius*2, cfg.radius*2],
-    iconAnchor: [cfg.radius,   cfg.radius  ],
-  });
-
-  if (markers[m.icaoId]) {
-    markers[m.icaoId].setLatLng([lat, lon]);
-    markers[m.icaoId].setIcon(icon);
-    markers[m.icaoId].getPopup().setContent(buildPopup(m));
-  } else {
-    const mk = L.marker([lat, lon], { icon })
-      .addTo(map)
-      .bindPopup(buildPopup(m), { maxWidth: 320 });
-    markers[m.icaoId] = mk;
-  }
-
-  metarData[m.icaoId] = m;
-}
-
-// ── MAIN REFRESH ──────────────────────────────────────────────────
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 async function refreshAll() {
   document.getElementById('loading').style.display = 'flex';
   setStatus('Fetching METARs…');
 
   const data = await fetchMetars(airports);
 
-<<<<<<< HEAD
   if (!data.length) {
     setStatus('⚠ All fetch attempts failed — see details below.');
     showDebug('All three methods failed. If you are running this as a local file, try hosting it on GitHub Pages or Netlify (free). See the README in the email for instructions.');
-=======
-  if (data.length === 0) {
-    setStatus('⚠ No data returned. Check airport codes or network.');
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
     document.getElementById('loading').style.display = 'none';
     return;
   }
 
-<<<<<<< HEAD
   data.forEach(upsertMarker);
 
   const cats = data.reduce((acc, m) => {
@@ -705,42 +488,10 @@ async function refreshAll() {
 // ─────────────────────────────────────────────────────────────────
 //  UI HELPERS
 // ─────────────────────────────────────────────────────────────────
-=======
-  // Track which airports responded
-  const fetched = new Set();
-  data.forEach(m => { upsertMarker(m); fetched.add(m.icaoId); });
-
-  // Mark airports with no data as unknown
-  airports.forEach(icao => {
-    if (!fetched.has(icao) && !markers[icao]) {
-      // Try to add a placeholder — we won't have coords without data
-      // Just note it in status
-    }
-  });
-
-  const cats = data.reduce((acc, m) => {
-    const c = flightCategory(m);
-    acc[c] = (acc[c] || 0) + 1;
-    return acc;
-  }, {});
-
-  const summary = Object.entries(cats)
-    .map(([k,v]) => `${v} ${k}`)
-    .join(' · ');
-
-  setStatus(`${data.length} stations loaded · ${summary}`);
-  document.getElementById('last-update').textContent =
-    'Updated: ' + new Date().toUTCString().replace('GMT','Z');
-
-  document.getElementById('loading').style.display = 'none';
-}
-
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 function setStatus(msg) {
   document.getElementById('status-msg').textContent = msg;
 }
 
-<<<<<<< HEAD
 let debugLines = [];
 function showDebug(msg) {
   debugLines.push(msg);
@@ -759,43 +510,17 @@ function addAirports() {
   const raw = document.getElementById('airport-input').value;
   const newOnes = raw.toUpperCase().split(/[\s,]+/).filter(s => /^[A-Z]{4}$/.test(s));
   if (!newOnes.length) { alert('Enter valid 4-letter ICAO codes (e.g. KCLL KDFW)'); return; }
-=======
-// ── ADD AIRPORTS FROM INPUT ────────────────────────────────────────
-function addAirports() {
-  const raw = document.getElementById('airport-input').value;
-  const newOnes = raw.toUpperCase().split(/[\s,]+/).filter(s => /^[A-Z]{4}$/.test(s));
-
-  if (!newOnes.length) {
-    alert('Please enter valid 4-letter ICAO codes (e.g. KCLL KDFW)');
-    return;
-  }
-
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   newOnes.forEach(icao => { if (!airports.includes(icao)) airports.push(icao); });
   document.getElementById('airport-input').value = '';
   refreshAll();
 }
 
-<<<<<<< HEAD
 document.getElementById('airport-input')
   .addEventListener('keydown', e => { if (e.key === 'Enter') addAirports(); });
 
 function resetDefaults() {
   Object.values(markers).forEach(mk => map.removeLayer(mk));
   markers = {}; metarData = {};
-=======
-// Support Enter key in input
-document.getElementById('airport-input')
-  .addEventListener('keydown', e => { if (e.key === 'Enter') addAirports(); });
-
-// ── RESET ─────────────────────────────────────────────────────────
-function resetDefaults() {
-  // Remove all existing markers
-  Object.values(markers).forEach(mk => map.removeLayer(mk));
-  markers = {};
-  metarData = {};
-
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
   airports = [
     'KCLL','KHOU','KDFW','KSAT','KAUS','KIAH','KELP','KAMA',
     'KLBB','KABI','KMAF','KTYR','KACT','KSPS','KGGG','KBRO'
@@ -803,17 +528,10 @@ function resetDefaults() {
   refreshAll();
 }
 
-<<<<<<< HEAD
 // Auto-refresh every 5 minutes
 setInterval(refreshAll, 5 * 60 * 1000);
 
 // Initial load
-=======
-// ── AUTO-REFRESH every 5 minutes ─────────────────────────────────
-setInterval(refreshAll, 5 * 60 * 1000);
-
-// ── INITIAL LOAD ──────────────────────────────────────────────────
->>>>>>> 35a99e086a984f36ad4e355da9e096746e8e27fa
 refreshAll();
 </script>
 </body>

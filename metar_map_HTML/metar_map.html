@@ -16,14 +16,10 @@
   :root {
     --wa-blue:   #2B3990;
     --wa-red:    #C1272D;
-    --wa-black:  #000000;
-    --wa-dark:   #0a0c14;
     --wa-panel:  rgba(10, 12, 20, 0.82);
     --wa-border: rgba(43, 57, 144, 0.45);
     --wa-text:   #c8cfe8;
     --wa-bright: #e8ecff;
-
-    /* Flight category colors */
     --vfr:  #00e676;
     --mvfr: #40a9ff;
     --ifr:  #C1272D;
@@ -34,33 +30,28 @@
   html, body {
     width: 100%; height: 100%;
     overflow: hidden;
-    background: var(--wa-black);
+    background: #000;
     font-family: 'Rajdhani', sans-serif;
     color: var(--wa-text);
   }
 
-  /* ── MAP fills entire screen ───────────────────────────────── */
   #map {
     position: fixed;
     inset: 0;
     z-index: 1;
   }
 
-  /* Dark map tiles */
-  .leaflet-tile { filter: brightness(.75) saturate(.7) hue-rotate(5deg); }
-
-  /* Hide default Leaflet zoom (we make our own) */
+  .leaflet-tile { filter: brightness(.75) saturate(.7); }
   .leaflet-control-zoom { display: none !important; }
   .leaflet-control-attribution { display: none !important; }
 
-  /* ── OVERLAY PANELS (sit above map) ───────────────────────── */
   .overlay {
     position: fixed;
     z-index: 100;
     pointer-events: auto;
   }
 
-  /* ── TOP CENTER — Title bar ────────────────────────────────── */
+  /* Top center title */
   #title-bar {
     top: 0; left: 50%; transform: translateX(-50%);
     background: var(--wa-panel);
@@ -81,8 +72,8 @@
     color: var(--wa-bright);
   }
 
-  #title-bar .brand span.w { color: var(--wa-blue); }
-  #title-bar .brand span.a { color: var(--wa-red);  }
+  #title-bar .brand .w { color: var(--wa-blue); }
+  #title-bar .brand .a { color: var(--wa-red);  }
 
   #title-bar .status-line {
     font-family: 'Share Tech Mono', monospace;
@@ -92,9 +83,42 @@
     margin-top: 2px;
   }
 
-  #title-bar .status-line #status-msg { color: #8899cc; }
+  #status-msg { color: #8899cc; }
 
-  /* ── BOTTOM RIGHT — Zoom + Legend cluster ──────────────────── */
+  /* Top right timestamp */
+  #refresh-panel {
+    top: 0; right: 28px;
+    background: var(--wa-panel);
+    border: 1px solid var(--wa-border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 6px 14px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #last-update {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: #4a5580;
+  }
+
+  .refresh-btn {
+    background: none;
+    border: 1px solid var(--wa-border);
+    border-radius: 6px;
+    color: #8899cc;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color .15s, border-color .15s;
+  }
+  .refresh-btn:hover { color: var(--wa-bright); border-color: var(--wa-blue); }
+
+  /* Bottom right legend + zoom */
   #control-cluster {
     bottom: 28px; right: 28px;
     display: flex;
@@ -103,7 +127,6 @@
     gap: 12px;
   }
 
-  /* Legend */
   #legend {
     background: var(--wa-panel);
     border: 1px solid var(--wa-border);
@@ -112,7 +135,7 @@
     backdrop-filter: blur(12px);
   }
 
-  #legend .leg-title {
+  .leg-title {
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 3px;
@@ -140,12 +163,7 @@
     box-shadow: 0 0 7px currentColor;
   }
 
-  /* Zoom buttons */
-  #zoom-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  #zoom-btns { display: flex; flex-direction: column; gap: 4px; }
 
   .zoom-btn {
     width: 42px; height: 42px;
@@ -154,21 +172,16 @@
     border-radius: 8px;
     color: var(--wa-bright);
     font-size: 1.3rem;
-    font-weight: 300;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     backdrop-filter: blur(12px);
     transition: background .15s, border-color .15s;
     user-select: none;
   }
+  .zoom-btn:hover { background: rgba(43,57,144,.5); border-color: var(--wa-blue); }
+  .zoom-btn:active { background: rgba(193,39,45,.4); }
 
-  .zoom-btn:hover {
-    background: rgba(43, 57, 144, 0.5);
-    border-color: var(--wa-blue);
-  }
-  .zoom-btn:active { background: rgba(193, 39, 45, 0.4); }
-
-  /* ── BOTTOM LEFT — Add airport input ──────────────────────── */
+  /* Bottom left add airport */
   #add-airport-panel {
     bottom: 28px; left: 28px;
     background: var(--wa-panel);
@@ -213,41 +226,7 @@
   .sm-btn:hover { opacity: .8; }
   .sm-btn.red { background: var(--wa-red); }
 
-  /* ── TOP CENTER RIGHT — Last update + refresh ──────────────── */
-  #refresh-panel {
-    top: 0; right: 28px;
-    background: var(--wa-panel);
-    border: 1px solid var(--wa-border);
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    padding: 6px 14px;
-    backdrop-filter: blur(12px);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #last-update {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    color: #4a5580;
-    letter-spacing: .5px;
-  }
-
-  .refresh-btn {
-    background: none;
-    border: 1px solid var(--wa-border);
-    border-radius: 6px;
-    color: #8899cc;
-    cursor: pointer;
-    font-size: 0.9rem;
-    width: 26px; height: 26px;
-    display: flex; align-items: center; justify-content: center;
-    transition: color .15s, border-color .15s;
-  }
-  .refresh-btn:hover { color: var(--wa-bright); border-color: var(--wa-blue); }
-
-  /* ── LOADING OVERLAY ───────────────────────────────────────── */
+  /* Loading overlay */
   #loading {
     position: fixed;
     inset: 0;
@@ -279,7 +258,7 @@
     color: #4a5a8a;
   }
 
-  /* ── DEBUG panel ───────────────────────────────────────────── */
+  /* Debug panel */
   #debug-panel {
     display: none;
     position: fixed;
@@ -297,7 +276,7 @@
     backdrop-filter: blur(8px);
   }
 
-  /* Popup styling */
+  /* Popups */
   .leaflet-popup-content-wrapper {
     background: #0d1120;
     border: 1px solid var(--wa-border);
@@ -314,7 +293,6 @@
     line-height: 1.7;
     min-width: 210px;
   }
-
   .metar-popup .icao {
     font-family: 'Rajdhani', sans-serif;
     font-size: 1.2rem;
@@ -322,7 +300,6 @@
     color: var(--wa-bright);
     margin-bottom: 2px;
   }
-
   .metar-popup .cat-badge {
     display: inline-block;
     padding: 2px 9px;
@@ -333,11 +310,9 @@
     margin-bottom: 8px;
     color: #000;
   }
-
   .metar-popup table { width: 100%; border-collapse: collapse; }
   .metar-popup td { padding: 1px 0; color: var(--wa-text); }
   .metar-popup td:first-child { color: #4a6080; padding-right: 10px; width: 70px; }
-
   .metar-popup .raw {
     background: rgba(255,255,255,.06);
     border-radius: 4px;
@@ -352,10 +327,9 @@
 </head>
 <body>
 
-<!-- FULL SCREEN MAP -->
 <div id="map"></div>
 
-<!-- TOP CENTER: Title -->
+<!-- Top center -->
 <div class="overlay" id="title-bar">
   <div class="brand">
     <span class="w">W</span>atts <span class="a">A</span>viation — Live METAR Map
@@ -365,13 +339,13 @@
   </div>
 </div>
 
-<!-- TOP RIGHT: Timestamp + refresh -->
+<!-- Top right -->
 <div class="overlay" id="refresh-panel">
   <span id="last-update">--:-- Z</span>
   <button class="refresh-btn" onclick="refreshAll()" title="Refresh">⟳</button>
 </div>
 
-<!-- BOTTOM RIGHT: Legend + Zoom -->
+<!-- Bottom right -->
 <div class="overlay" id="control-cluster">
   <div id="legend">
     <div class="leg-title">Flight Category</div>
@@ -382,22 +356,20 @@
     <div class="leg"><span class="leg-dot" style="background:var(--unkn);color:var(--unkn)"></span>UNKN</div>
   </div>
   <div id="zoom-btns">
-    <button class="zoom-btn" onclick="map.zoomIn()"  title="Zoom In">+</button>
-    <button class="zoom-btn" onclick="map.zoomOut()" title="Zoom Out">−</button>
+    <button class="zoom-btn" onclick="map.zoomIn()">+</button>
+    <button class="zoom-btn" onclick="map.zoomOut()">−</button>
   </div>
 </div>
 
-<!-- BOTTOM LEFT: Add airport -->
+<!-- Bottom left -->
 <div class="overlay" id="add-airport-panel">
   <input type="text" id="airport-input" placeholder="Add ICAO: KCLL KDFW …">
   <button class="sm-btn" onclick="addAirports()">Add</button>
   <button class="sm-btn red" onclick="resetDefaults()">Reset</button>
 </div>
 
-<!-- Debug -->
 <div id="debug-panel"></div>
 
-<!-- Loading -->
 <div id="loading">
   <div class="wa-spinner"></div>
   <div class="loading-text">FETCHING METAR DATA…</div>
@@ -405,10 +377,8 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  CONFIGURATION
+//  AIRPORT LIST
 // ═══════════════════════════════════════════════════════════════
-
-// ── Airport list ──────────────────────────────────────────────
 let airports = [
   // Major US Hubs
   'KATL','KLAX','KORD','KDFW','KDEN','KJFK','KSFO','KLAS',
@@ -467,7 +437,7 @@ let markers   = {};
 let metarData = {};
 
 // ═══════════════════════════════════════════════════════════════
-//  FETCH — CheckWX batched OR your own proxy
+//  FETCH — Vercel proxy only (free, unlimited)
 // ═══════════════════════════════════════════════════════════════
 async function fetchMetars(icaoList) {
   try {
@@ -483,50 +453,6 @@ async function fetchMetars(icaoList) {
     console.error('METAR fetch error:', err);
     return [];
   }
-}
-
-  // ── CheckWX direct (batched 10 at a time) ───────────────────
-  const batches = [];
-  for (let i = 0; i < icaoList.length; i += 10) batches.push(icaoList.slice(i, i + 10));
-
-  const results = [];
-  for (const batch of batches) {
-    const ids = batch.join(',');
-    try {
-      const res = await fetch(`https://api.checkwx.com/metar/${ids}/decoded`, {
-        headers: { 'X-API-Key': API_KEY },
-        signal: AbortSignal.timeout(10000)
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (json.data && json.data.length) {
-        json.data.forEach(m => results.push(translate(m)));
-      }
-    } catch (err) {
-      showDebug(`Batch failed (${ids}): ${err.message}`);
-    }
-  }
-  return results;
-}
-
-function translate(m) {
-  return {
-    icaoId:         m.icao,
-    lat:            m.station?.geometry?.coordinates?.[1],
-    lon:            m.station?.geometry?.coordinates?.[0],
-    flightCategory: m.flight_category,
-    rawOb:          m.raw_text,
-    reportTime:     m.observed,
-    wdir:           m.wind?.degrees,
-    wspd:           m.wind?.speed_kts,
-    wgst:           m.wind?.gust_kts,
-    visib:          m.visibility?.miles_float,
-    temp:           m.temperature?.celsius,
-    dewp:           m.dewpoint?.celsius,
-    altim:          m.barometer?.hg ?? null,
-    wxString:       m.conditions?.map(c => c.code).join(' ') || null,
-    clouds:         (m.clouds || []).map(c => ({ cover: c.code, base: c.base_feet_agl }))
-  };
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -611,7 +537,7 @@ async function refreshAll() {
   const data = await fetchMetars(airports);
 
   if (!data.length) {
-    setStatus('⚠ No data — check API key');
+    setStatus('⚠ No data — check proxy or network');
     document.getElementById('loading').style.display = 'none';
     return;
   }
@@ -625,11 +551,8 @@ async function refreshAll() {
 
   const summary = Object.entries(cats).map(([k,v]) => `${v} ${k}`).join('  ·  ');
   setStatus(`${data.length} stations  ·  ${summary}`);
-
-  const now = new Date();
   document.getElementById('last-update').textContent =
-    'Updated ' + now.toUTCString().replace('GMT','Z');
-
+    'Updated ' + new Date().toUTCString().replace('GMT','Z');
   document.getElementById('loading').style.display = 'none';
 }
 

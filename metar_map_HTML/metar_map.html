@@ -478,20 +478,20 @@ let metarData = {};
 //  FETCH — CheckWX batched OR your own proxy
 // ═══════════════════════════════════════════════════════════════
 async function fetchMetars(icaoList) {
-  if (USE_PROXY) {
-    // ── Your own free Vercel proxy (unlimited, no key exposed) ──
-    try {
-      const res = await fetch(
-        `${PROXY_URL}?ids=${icaoList.join(',')}`,
-        { signal: AbortSignal.timeout(12000) }
-      );
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json(); // proxy returns already-translated array
-    } catch (err) {
-      showDebug(`Proxy fetch failed: ${err.message}`);
-      return [];
-    }
+  try {
+    setStatus('Fetching METARs…');
+    const res = await fetch(
+      `https://project-2rt0o.vercel.app/api/metar?ids=${icaoList.join(',')}`,
+      { signal: AbortSignal.timeout(12000) }
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    showDebug(`Fetch failed: ${err.message}`);
+    console.error('METAR fetch error:', err);
+    return [];
   }
+}
 
   // ── CheckWX direct (batched 10 at a time) ───────────────────
   const batches = [];

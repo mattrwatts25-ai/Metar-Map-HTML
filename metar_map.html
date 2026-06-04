@@ -332,7 +332,7 @@
   const dpr       = devicePixelRatio || 1;
   const isUHD     = sw >= 3840 || (sw >= 2560 && dpr >= 1.5);
   const isQHD     = sw >= 2560 && !isUHD;
-  const scale     = isUHD ? 1.8 : isQHD ? 1.35 : 1.0;
+  const scale     = isUHD ? 1.4 : isQHD ? 1.2 : 1.0;
 
   root.style.setProperty('--s',      scale);
   root.style.setProperty('--side',   Math.round(24 * scale) + 'px');

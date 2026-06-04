@@ -59,15 +59,10 @@
   .brand-row {
     display:flex; align-items:center; justify-content:center; gap:10px;
   }
-  .brand-wa {
-    font-family:'Oswald', sans-serif;
-    font-size:calc(1.15rem * var(--s));
-    font-weight:700;
-    letter-spacing:3px;
-    color:var(--wa-bright);
+  .brand-logo {
+    height: calc(44px * var(--s));
+    width: auto;
   }
-  .brand-wa .w { color:var(--wa-blue); }
-  .brand-wa .a { color:var(--wa-red); }
   .brand-title {
     font-family:'Oswald', sans-serif;
     font-size:calc(var(--fbrand) * var(--s));
@@ -248,8 +243,8 @@
 <!-- Title bar -->
 <div class="ov" id="title-bar">
   <div class="brand-row">
-    <div class="brand-wa"><span class="w">W</span>atts <span class="a">A</span>viation</div>
-    <div class="brand-title">— Live METAR Map</div>
+    <img src="WattsAviationlogo.png" class="brand-logo" alt="Watts Aviation">
+    <div class="brand-title">Live METAR Map</div>
   </div>
   <div class="status-line"><span id="status-msg">Initializing…</span></div>
 </div>
